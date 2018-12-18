@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.zwc.cms.mapper.NewsInfoMapper">
+
+	<!-- 查询所有的数据 -->
+    <select id="findAll" resultType="newsInfo">
+        select * from newsInfo
+    </select>
+    
+     <select id="getNewsInfoByNewsId" resultType="newsInfo" parameterType="int">
+        select * from newsInfo where id = #{id}
+    </select>
+    
+    <!-- 插入新闻数据 -->
+    <insert id="insertNewsInfo" parameterType="newsInfo" useGeneratedKeys="true">
+    insert into newsInfo (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsStatus,newsLook,isShow,imgUrls,createtime,updatetime,newsContent)
+   		value(null,#{newsId},#{newsName},#{newsUrl},#{newsSource},#{newsAuthor},#{newsStatus},#{newsLook},#{isShow},#{imgUrls},#{createtime},#{updatetime},#{newsContent})
+    </insert>
+    
+     <select id="getNewsInfoByUrl" resultType="newsInfo" parameterType="String">
+        select * from newsInfo where newsUrl = #{newsUrl}
+    </select>
+    
+    <!-- 返回list的集合数据 -->
+    <resultMap type="newsInfo" id="newsInfosResultMap" autoMapping="true">
+    	
+    </resultMap>
+    
+     <!--if 标签使用类似html的C标签的if -->
+    <select id="getNewsInfosByWhere" parameterType="newsInfo" resultMap="newsInfosResultMap">
+        select * from newsInfo where 1 = 1 
+         <if test='id != null'> 
+           and id = #{id}
+        </if>
+         <if test='newsId != null'> 
+           and newsId = #{newsId}
+        </if>
+         <if test='newsName != null'> 
+           and newsName like '%${newsName}%'
+        </if>
+         <if test='newsUrl != null'> 
+           and newsUrl = #{newsUrl}
+        </if>
+         <if test='newsSource != null'> 
+           and newsSource = #{newsSource}
+        </if>
+        <if test='newsStatus != null'> 
+           and newsStatus = #{newsStatus}
+        </if>
+        <if test='newsLook != null'>
+           and newsLook= #{newsLook}
+        </if>
+        <if test='isShow != null'>
+           and isShow= #{isShow}
+        </if>
+    </select>
+    
+    
+    
+</mapper>

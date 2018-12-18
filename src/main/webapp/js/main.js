@@ -11,7 +11,8 @@ layui.config({
 	})
 
 	//动态获取文章总数和待审核文章数量,最新文章
-	$.get("../json/newsList.json",
+//	$.get("../json/newsList.json",
+	$.get("/newsInfo/getAllNewsInfo",		
 		function(data){
 			var waitNews = [];
 			$(".allNews span").text(data.length);  //文章总数

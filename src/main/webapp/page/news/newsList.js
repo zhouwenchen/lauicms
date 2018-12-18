@@ -8,7 +8,13 @@ layui.config({
 
 	//加载页面数据
 	var newsData = '';
-	$.get("../../json/newsList.json", function(data){
+//	$.get("../../json/newsList.json", function(data){
+	$.ajax({
+		url : "/newsInfo/getAllNewsInfo",
+		data:{"keys":""},
+		type : "get",
+		dataType : "json",
+		success : function(data){
 		var newArray = [];
 		//单击首页“待审核文章”加载的信息
 		if($(".top_tab li.layui-this cite",parent.document).text() == "待审核文章"){
@@ -34,16 +40,19 @@ layui.config({
 			//执行加载数据的方法
 			newsList();
 		}
-	})
+	}})
 
 	//查询
 	$(".search_btn").click(function(){
 		var newArray = [];
 		if($(".search_input").val() != ''){
 			var index = layer.msg('查询中，请稍候',{icon: 16,time:false,shade:0.8});
+			var keys = $(".search_input").val();
             setTimeout(function(){
             	$.ajax({
-					url : "../../json/newsList.json",
+//					url : "../../json/newsList.json",
+            		url : "/newsInfo/getAllNewsInfo",
+            		data:{"keys":keys},
 					type : "get",
 					dataType : "json",
 					success : function(data){

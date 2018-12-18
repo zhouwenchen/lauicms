@@ -9,23 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.zwc.cms.bean.ResponseResult;
+import org.zwc.cms.bean.NewsInfo;
 import org.zwc.cms.bean.User;
 import org.zwc.cms.service.UserService;
 
-
-@RestController/**×Ô¶¯·µ»ØµÄÊÇjson¸ñÊ½Êı¾İ***/
+/**
+ * è¿”å›jsonæ•°æ®
+* @author zhouwenchen
+* @date 2018å¹´12æœˆ18æ—¥ ä¸‹åˆ3:56:32
+ */
+@RestController
 public class UserController {
     
     @Autowired
     private UserService userService;
 
-	@RequestMapping("/")
-	String home() {
-		return "Hello World!";
-	}
-    
     @RequestMapping("list")
     public List<User> list(){
         List<User> list = userService.findAllUser();
@@ -33,7 +31,7 @@ public class UserController {
     }
     
     /**
-     * »ñÈ¡ÓÃ»§µÄÏêÏ¸ĞÅÏ¢
+     * æ ¹æ®idï¼ŒæŸ¥è¯¢ç”¨æˆ·çš„ä¿¡æ¯
      * @return
      */
     @RequestMapping("/getUserInfo/{id}")

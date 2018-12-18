@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.zwc.cms.mapper.NewsContentMapper">
+    <select id="findAll" resultType="newsContent">
+        select * from newsInfo
+    </select>
+    
+     <select id="getNewsContentByNewsId" resultType="newsContent" parameterType="int">
+        select * from newsInfo where id = #{id}
+    </select>
+    
+    <!-- 插入新闻数据 -->
+    <insert id="insertNewsContent" parameterType="newsContent" useGeneratedKeys="true">
+    insert into newsContent (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsContent,imgUrls,createtime,updatetime)
+   		value(null,#{newsId},#{newsName},#{url},#{newsSource},#{newsAuthor},#{newsContent},#{imgUrls},#{createtime},#{updatetime})
+    </insert>
+</mapper>

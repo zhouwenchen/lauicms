@@ -3,7 +3,6 @@ package org.zwc.cms.bean;
 import java.util.Map;
 
 /**
- * 返回一个结果类
  * @author zhouwenchen
  */
 public class ResponseResult {

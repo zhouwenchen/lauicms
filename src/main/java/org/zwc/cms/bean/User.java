@@ -48,7 +48,8 @@ public class User implements Serializable{
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
-
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", username=" + username + ", birthday=" + birthday + ", sex=" + sex + ", address=" + address + "]";
+	}
 }
