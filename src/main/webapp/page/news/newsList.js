@@ -79,6 +79,14 @@ layui.config({
 		            				return dataStr;
 		            			}
 		            		}
+//		            		//id
+//		            		if(newsStr.newsName.indexOf(selectStr) > -1){
+//			            		newsStr["id"] = changeStr(newsStr.id);
+//		            		}
+//		            		// newsId
+//		            		if(newsStr.newsName.indexOf(selectStr) > -1){
+//			            		newsStr["newsId"] = changeStr(newsStr.newsId);
+//		            		}
 		            		//文章标题
 		            		if(newsStr.newsName.indexOf(selectStr) > -1){
 			            		newsStr["newsName"] = changeStr(newsStr.newsName);
@@ -159,8 +167,26 @@ layui.config({
             	for(var j=0;j<$checked.length;j++){
             		for(var i=0;i<newsData.length;i++){
 						if(newsData[i].newsId == $checked.eq(j).parents("tr").find(".news_del").attr("data-id")){
+							var tr = $checked.eq(j).parents("tr");
+							if(tr.find("td:eq(3)").text() == '审核通过'){
+								console.log('已经审核通过了');
+								alert('已经审核通过了');
+								form.render();
+							} else{
+								var id = tr.find("input#id").val();
+//								alert(tr.find("input#id").val());
+								$.get("/newsInfo/update",{"id":id,"newsStatus":'审核通过'}, function(data){
+									if(data.status=="success"){
+										layer.close(index);
+										layer.msg("展示状态修改成功！");
+									}else {
+										layer.close(index);
+										layer.msg("展示状态修改失败！");
+									}
+								});
+							}
 							//修改列表中的文字
-							$checked.eq(j).parents("tr").find("td:eq(3)").text("审核通过").removeAttr("style");
+//							$checked.eq(j).parents("tr").find("td:eq(3)").text("审核通过").removeAttr("style");
 							//将选中状态删除
 							$checked.eq(j).parents("tr").find('input[type="checkbox"][name="checked"]').prop("checked",false);
 							form.render();
@@ -227,10 +253,17 @@ layui.config({
 	//是否展示
 	form.on('switch(isShow)', function(data){
 		var index = layer.msg('修改中，请稍候',{icon: 16,time:false,shade:0.8});
-        setTimeout(function(){
-            layer.close(index);
-			layer.msg("展示状态修改成功！");
-        },2000);
+	    var tr = $(data.elem);
+	    var id = tr.parents('tr').first().find('input#id').val();// 获取到id的值
+		$.get("/newsInfo/update",{"id":id,"isShow":data.elem.checked}, function(data){
+			if(data.status=="success"){
+				layer.close(index);
+				layer.msg("展示状态修改成功！");
+			}else {
+				layer.close(index);
+				layer.msg("展示状态修改失败！");
+			}
+		});
 	})
  
 	//操作
@@ -275,7 +308,10 @@ layui.config({
 				for(var i=0;i<currData.length;i++){
 					dataHtml += '<tr>'
 			    	+'<td><input type="checkbox" name="checked" lay-skin="primary" lay-filter="choose"></td>'
-			    	+'<td align="left">'+currData[i].newsName+'</td>'
+			    	// 新增，用于隐藏的id和newsId的指
+			    	+'<input type="hidden" id="id" name="id" value='+currData[i].id+'>'
+			    	+'<input type="hidden" id="newsId" name="newsId" value='+currData[i].newsId+'>'
+			    	+'<td align="left" >'+currData[i].newsName+'</td>'
 			    	+'<td>'+currData[i].newsAuthor+'</td>';
 			    	if(currData[i].newsStatus == "待审核"){
 			    		dataHtml += '<td style="color:#f00">'+currData[i].newsStatus+'</td>';

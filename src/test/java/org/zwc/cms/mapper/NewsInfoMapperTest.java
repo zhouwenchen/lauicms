@@ -14,9 +14,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zwc.cms.bean.NewsInfo;
 import org.zwc.cms.constant.CmsEnum;
+import org.zwc.cms.service.NewsInfoService;
 import org.zwc.cms.utils.CommentUtils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 @SpringBootTest
 @RunWith(SpringRunner.class)
@@ -24,6 +27,9 @@ public class NewsInfoMapperTest {
 	
 	@Autowired
 	private NewsInfoMapper newsInfoMapper;
+	
+	@Autowired
+	private NewsInfoService newsInfoService;
 	
 	@Before
 	public void Before(){
@@ -95,15 +101,43 @@ public class NewsInfoMapperTest {
 //		System.out.println(Long.MAX_VALUE-Long.parseLong(CommentUtils.builderRowKey(String.valueOf(System.currentTimeMillis()), "999999")));
 	}
 	
+	/**
+	 * 根据条件查询
+	 */
 	@Test
 	public void getNewsInfosByWhereTest(){
 		NewsInfo queryNewInfo = new NewsInfo();
 //		queryNewInfo.setNewsLook("开放浏览");
 //		queryNewInfo.setIsShow("否");
-		queryNewInfo.setNewsName("我不是药神");
+//		queryNewInfo.setNewsName("我不是药神");
 		List<NewsInfo> newsInfos = newsInfoMapper.getNewsInfosByWhere(queryNewInfo);
 		for (NewsInfo newsInfo : newsInfos) {
 			System.out.println(newsInfo);
 		}
+	}
+	
+	@Test
+	public void updateNewsInfoTest(){
+		NewsInfo newsInfo = new NewsInfo();
+		newsInfo.setId(1L);
+		newsInfo.setIsShow(CmsEnum.ISSHOW_YES);
+		newsInfo.setNewsStatus(CmsEnum.NEWSSTATUS_REFUSE);
+		newsInfo.setUpdatetime(new Date());
+		int rows = newsInfoMapper.updateNewsInfo(newsInfo);
+		System.out.println(rows);
+	}
+	
+	@Test
+	public void addNewsInfo_JSON2Obj(){
+		String str = "{'newsName':'惊人！是我的没有错','newsLook':'会员浏览','newsTime':'2018-12-19','newsAuthor':'周文臣','newsContent':'<p>Fastjson是一个Java语言编写的JSON处理器,由阿里巴巴公司开发。<br><br>1、遵循http://json.org标准，为其官方网站收录的参考实现之一。<br><br>2、功能qiang打，支持JDK的各种类型，包括基本的JavaBean、Collection、Map、Date、Enum、泛型。<br><br>3、无依赖，不需要例外额外的jar，能够直接跑在JDK上。<br><br>4、开源，使用Apache License 2.0协议开源。http://code.alibabatech.com/wiki/display/FastJSON/Home<br>--------------------- <br>作者：jilongliang <br>来源：CSDN <br>原文：https://blog.csdn.net/jilongliang/article/details/42870951 <br>版权声明：本文为博主原创文章，转载请附上博文链接！<br></p>','isShow':'checked','newsStatus':'审核通过'}";
+		NewsInfo newsInfo = JSONObject.parseObject(str,NewsInfo.class);
+		System.out.println(newsInfo);
+//		JSONArray jsonArray = JSONObject.parseArray(str);
+//		for(int i = 0; i < jsonArray.size();i++){
+//			JSONObject object = jsonArray.getJSONObject(i);
+//			System.out.println(object);
+//		}
+		int info = newsInfoService.insertNewsInfo(str);
+		System.out.println("添加文章"+info);
 	}
 }

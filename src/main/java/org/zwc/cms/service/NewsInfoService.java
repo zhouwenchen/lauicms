@@ -2,8 +2,8 @@ package org.zwc.cms.service;
 
 import java.util.List;
 
+import org.zwc.cms.bean.CmsResult;
 import org.zwc.cms.bean.NewsInfo;
-import org.zwc.cms.vo.NewsInfoVo;
 
 /**
  * 
@@ -30,6 +30,12 @@ public interface NewsInfoService {
 	 * @return
 	 */
 	public int insertNewsInfo(NewsInfo newsInfo);
+	/**
+	 * 插入新闻数据
+	 * @param newsInfo
+	 * @return
+	 */
+	public int insertNewsInfo(String params);
 	
 	/**
 	 * 根据url查询数据
@@ -44,4 +50,10 @@ public interface NewsInfoService {
      * @return
      */
 	public List<NewsInfo> getNewsInfosByWhere(NewsInfo newsInfo);
+	
+	/**
+	 * 更新操作
+	 * @param newsInfo
+	 */
+	public CmsResult updateNewsInfo(NewsInfo newsInfo);
 }

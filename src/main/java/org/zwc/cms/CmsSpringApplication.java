@@ -4,9 +4,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class Example {
+public class CmsSpringApplication {
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Example.class, args);
+		SpringApplication.run(CmsSpringApplication.class, args);
 	}
 }

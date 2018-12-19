@@ -21,16 +21,28 @@ layui.config({
  			newsStatus = data.field.shenhe=="on" ? "审核通过" : "待审核";
 
  		addNews = '{"newsName":"'+$(".newsName").val()+'",';  //文章名称
- 		addNews += '"newsId":"'+new Date().getTime()+'",';	 //文章id
+// 		addNews += '"newsId":"'+new Date().getTime()+'",';	 //文章id
  		addNews += '"newsLook":"'+$(".newsLook option").eq($(".newsLook").val()).text()+'",'; //开放浏览
  		addNews += '"newsTime":"'+$(".newsTime").val()+'",'; //发布时间
  		addNews += '"newsAuthor":"'+$(".newsAuthor").val()+'",'; //文章作者
+ 		addNews += '"newsContent":"'+$("#news_content").val()+'",'; // 内容
  		addNews += '"isShow":"'+ isShow +'",';  //是否展示
  		addNews += '"newsStatus":"'+ newsStatus +'"}'; //审核状态
  		addNewsArray.unshift(JSON.parse(addNews));
- 		window.sessionStorage.setItem("addNews",JSON.stringify(addNewsArray));
+// 		window.sessionStorage.setItem("addNews",JSON.stringify(addNewsArray)); // 写入到浏览器的缓存中
  		//弹出loading
  		var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+ 		alert(index);
+ 		$.get("/newsInfo/addNewsInfo",{"params":JSON.stringify(JSON.parse(addNews))}, function(data){
+			if(data.status=="success"){
+				layer.close(index);
+				layer.msg("展示状态修改成功！");
+			}else {
+				layer.close(index);
+				layer.msg("展示状态修改失败！");
+			}
+		});
+ 		
         setTimeout(function(){
             top.layer.close(index);
 			top.layer.msg("文章添加成功！");

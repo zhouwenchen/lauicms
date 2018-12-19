@@ -34,6 +34,8 @@ public class NewsInfo {
 	private Date updatetime;
 	/** 新闻内容*/
 	private String newsContent;
+	/** 是否是爬取*/
+	private String isCrawler;
 	
 	public NewsInfo() {
 		super();
@@ -142,12 +144,21 @@ public class NewsInfo {
 	public void setNewsContent(String newsContent) {
 		this.newsContent = newsContent;
 	}
+	
+	public String getIsCrawler() {
+		return isCrawler;
+	}
+
+	public void setIsCrawler(String isCrawler) {
+		this.isCrawler = isCrawler;
+	}
 
 	@Override
 	public String toString() {
 		return "NewsInfo [id=" + id + ", newsId=" + newsId + ", newsName=" + newsName + ", newsUrl=" + newsUrl
 				+ ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor + ", newsStatus=" + newsStatus
 				+ ", newsLook=" + newsLook + ", imgUrls=" + imgUrls + ", isShow=" + isShow + ", createtime="
-				+ createtime + ", updatetime=" + updatetime + ", newsContent=" + newsContent + "]";
+				+ createtime + ", updatetime=" + updatetime + ", newsContent=" + newsContent + ", isCrawler="
+				+ isCrawler + "]";
 	}
 }

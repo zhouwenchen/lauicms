@@ -17,6 +17,6 @@ public interface CmsEnum {
 	
 	/** isShow 是否显示*/
 	String ISSHOW_YES = "checked";
-	String ISSHOW_NO = "unchecked";
+	String ISSHOW_NO = "";
 	
 }

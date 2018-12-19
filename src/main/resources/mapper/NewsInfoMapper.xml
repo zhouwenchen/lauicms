@@ -13,8 +13,8 @@
     
     <!-- 插入新闻数据 -->
     <insert id="insertNewsInfo" parameterType="newsInfo" useGeneratedKeys="true">
-    insert into newsInfo (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsStatus,newsLook,isShow,imgUrls,createtime,updatetime,newsContent)
-   		value(null,#{newsId},#{newsName},#{newsUrl},#{newsSource},#{newsAuthor},#{newsStatus},#{newsLook},#{isShow},#{imgUrls},#{createtime},#{updatetime},#{newsContent})
+    insert into newsInfo (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsStatus,newsLook,isShow,imgUrls,createtime,updatetime,newsContent,isCrawler)
+   		value(null,#{newsId},#{newsName},#{newsUrl},#{newsSource},#{newsAuthor},#{newsStatus},#{newsLook},#{isShow},#{imgUrls},#{createtime},#{updatetime},#{newsContent},#{isCrawler})
     </insert>
     
      <select id="getNewsInfoByUrl" resultType="newsInfo" parameterType="String">
@@ -53,8 +53,18 @@
         <if test='isShow != null'>
            and isShow= #{isShow}
         </if>
+         	ORDER BY updatetime desc
     </select>
     
-    
-    
+    <!-- 根据条件更新操作 -->
+    <update id="updateNewsInfo" parameterType="newsInfo" useGeneratedKeys="true">
+		 update newsInfo
+		 <trim prefix="set" suffixOverrides=",">
+		  	<if test="isShow!=null">isShow=#{isShow},</if>
+		  	<if test="newsStatus!=null">newsStatus=#{newsStatus},</if>
+		  	<if test="updatetime!=null">updatetime=#{updatetime},</if>
+		 </trim>
+		 WHERE id=#{id}
+    </update>
+	   
 </mapper>

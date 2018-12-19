@@ -48,5 +48,10 @@ public interface NewsInfoMapper {
      */
 	public List<NewsInfo> getNewsInfosByWhere(NewsInfo newsInfo);
 	
+	/**
+	 * 更新操作
+	 * @param newsInfo
+	 */
+	public int updateNewsInfo(NewsInfo newsInfo);
 	
 }
