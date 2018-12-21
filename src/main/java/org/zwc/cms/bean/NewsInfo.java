@@ -2,6 +2,8 @@ package org.zwc.cms.bean;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**  
 * @author zhouwenchen
 * @date 2018年12月17日 上午10:47:55 
@@ -29,6 +31,7 @@ public class NewsInfo {
 	/** 是否显示*/
 	private String isShow;
 	/** 创建时间*/
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT-6")
 	private Date createtime;
 	/** 更新时间*/
 	private Date updatetime;

@@ -19,4 +19,8 @@ public interface CmsEnum {
 	String ISSHOW_YES = "checked";
 	String ISSHOW_NO = "";
 	
+	/** isCrawler 是否爬取数据*/
+	String ISCRAWLER_YES = "1";
+	String ISCRAWLER_NO = "0";
+	
 }

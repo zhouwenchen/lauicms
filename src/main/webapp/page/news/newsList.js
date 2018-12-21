@@ -265,11 +265,32 @@ layui.config({
 			}
 		});
 	})
- 
-	//操作
-	$("body").on("click",".news_edit",function(){  //编辑
-		layer.alert('您点击了文章编辑按钮，由于是纯静态页面，所以暂时不存在编辑内容，后期会添加，敬请谅解。。。',{icon:6, title:'文章编辑'});
+	
+	//操作,编辑文章
+	
+	$("body").on("click",".news_edit",this,function(){  //编辑
+		id = $(this).parents('tr').first().find("#id").val();
+		console.log();
+//		console.log($(this).parents);
+//		var objelem = $(obj.elem);
+//		console.log(objelem.parents('tr').first().find("#newsId").val());
+//		var id = $("#id").val();
+//		console.log(id);
+		var index = layui.layer.open({
+			title : "编辑文章",
+			type : 2,
+			content : "newsEdit.html?id="+id,
+			success : function(layero, index){
+				setTimeout(function(){
+					layui.layer.tips('点击此处返回文章列表', '.layui-layer-setwin .layui-layer-close', {
+						tips: 3
+					});
+				},500)
+			}
+		})
+		layui.layer.full(index);
 	})
+	
 
 	$("body").on("click",".news_collect",function(){  //收藏.
 		if($(this).text().indexOf("已收藏") > 0){
@@ -322,7 +343,7 @@ layui.config({
 			    	+'<td><input type="checkbox" name="show" lay-skin="switch" lay-text="是|否" lay-filter="isShow"'+currData[i].isShow+'></td>'
 			    	+'<td>'+currData[i].newsTime+'</td>'
 			    	+'<td>'
-					+  '<a class="layui-btn layui-btn-mini news_edit"><i class="iconfont icon-edit"></i> 编辑</a>'
+					+  '<a class="layui-btn layui-btn-mini news_edit" id="news_edit"><i class="iconfont icon-edit"></i> 编辑</a>'
 					+  '<a class="layui-btn layui-btn-normal layui-btn-mini news_collect"><i class="layui-icon">&#xe600;</i> 收藏</a>'
 					+  '<a class="layui-btn layui-btn-danger layui-btn-mini news_del" data-id="'+data[i].newsId+'"><i class="layui-icon">&#xe640;</i> 删除</a>'
 			        +'</td>'

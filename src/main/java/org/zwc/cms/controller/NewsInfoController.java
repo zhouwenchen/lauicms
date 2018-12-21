@@ -33,14 +33,15 @@ public class NewsInfoController {
 	 * @param newsId
 	 * @return
 	 */
-	@RequestMapping("/{newsId}")
-	public List<NewsInfo> getNewsInfosByWhere(@PathVariable(name = "newsId") String newsId) {
-		NewsInfo newsInfo = new NewsInfo();
+	@RequestMapping("/getNewsInfoByWhere")
+	public List<NewsInfo> getNewsInfosByWhere(NewsInfo newsInfo) {
 		// 1.验证参数的合法性
-		if(StringUtils.isEmpty(newsId)){
+		if(newsInfo == null){
 			return null;
 		}
-		newsInfo.setNewsId(newsId);
+		System.out.println(newsInfo.getId());
+//		newsInfo.setNewsId(newsId);
+//		newsInfo.setId(id);
 		return newsInfoService.getNewsInfosByWhere(newsInfo);
 	}
 	

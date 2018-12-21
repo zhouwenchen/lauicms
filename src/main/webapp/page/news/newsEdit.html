@@ -12,11 +12,14 @@
 	<link rel="stylesheet" href="../../layui/css/layui.css" media="all" />
 </head>
 <body class="childrenBody">
-	<form class="layui-form">
+	<form class="layui-form" lay-filter="newsEdit">
 		<div class="layui-form-item">
 			<label class="layui-form-label">文章标题</label>
 			<div class="layui-input-block">
-				<input type="text" class="layui-input newsName" lay-verify="required" placeholder="请输入文章标题">
+				<input type="text" class="layui-input newsName" lay-verify="required" name="newsName" placeholder="请输入文章标题">
+				<input type="hidden" id="id" name="id" value=''>
+				<input type="hidden" id="newsId" name="newsId" value=''>
+				
 			</div>
 		</div>
 		<div class="layui-form-item">
@@ -31,13 +34,13 @@
 			<div class="layui-inline">		
 				<label class="layui-form-label">文章作者</label>
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input newsAuthor" lay-verify="required" placeholder="请输入文章作者">
+					<input type="text" class="layui-input newsAuthor" lay-verify="required"  placeholder="请输入文章作者">
 				</div>
 			</div>
 			<div class="layui-inline">		
 				<label class="layui-form-label">发布时间</label>
 				<div class="layui-input-inline">
-					<input type="text" class="layui-input newsTime" lay-verify="required|date" onclick="layui.laydate({elem:this})">
+					<input type="text" class="layui-input newsTime" lay-verify="required|date"  onclick="layui.laydate({elem:this})">
 				</div>
 			</div>
 			<div class="layui-inline">
@@ -50,18 +53,18 @@
 				</div>
 			</div>
 		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">关键字</label>
-			<div class="layui-input-block">
-				<input type="text" class="layui-input" placeholder="请输入文章关键字">
-			</div>
-		</div>
-		<div class="layui-form-item">
-			<label class="layui-form-label">内容摘要</label>
-			<div class="layui-input-block">
-				<textarea placeholder="请输入内容摘要" class="layui-textarea"></textarea>
-			</div>
-		</div>
+<!-- 		<div class="layui-form-item"> -->
+<!-- 			<label class="layui-form-label">关键字</label> -->
+<!-- 			<div class="layui-input-block"> -->
+<!-- 				<input type="text" class="layui-input" placeholder="请输入文章关键字"> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 		<div class="layui-form-item"> -->
+<!-- 			<label class="layui-form-label">内容摘要</label> -->
+<!-- 			<div class="layui-input-block"> -->
+<!-- 				<textarea placeholder="请输入内容摘要" class="layui-textarea"></textarea> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 		<div class="layui-form-item">
 			<label class="layui-form-label">文章内容</label>
 			<div class="layui-input-block">
@@ -76,6 +79,6 @@
 		</div>
 	</form>
 	<script type="text/javascript" src="../../layui/layui.js"></script>
-	<script type="text/javascript" src="newsAdd.js"></script>
+	<script type="text/javascript" src="newsEdit.js"></script>
 </body>
 </html>

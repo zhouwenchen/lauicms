@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zwc.cms.bean.CmsResult;
 import org.zwc.cms.bean.NewsInfo;
+import org.zwc.cms.constant.CmsEnum;
 import org.zwc.cms.mapper.NewsInfoMapper;
 import org.zwc.cms.service.NewsInfoService;
 import org.zwc.cms.utils.CommentUtils;
@@ -52,7 +53,7 @@ public class NewInfoServiceImpl implements NewsInfoService{
 		newsInfo.setNewsUrl(""); // 目前没有生成的数据
 		newsInfo.setCreatetime(new Date());
 		newsInfo.setUpdatetime(newsInfo.getCreatetime());
-		newsInfo.setIsCrawler("否");
+		newsInfo.setIsCrawler(CmsEnum.ISCRAWLER_NO);
 		int result = newsInfoMapper.insertNewsInfo(newsInfo);
 		return result;
 	}

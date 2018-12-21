@@ -105,6 +105,7 @@ public class DemoMycrawler {
 			newsInfo.setCreatetime(new Date());
 			newsInfo.setUpdatetime(new Date());
 			newsInfo.setNewsContent(page.getContent());
+			newsInfo.setIsCrawler(CmsEnum.ISCRAWLER_YES); // 爬取
 			System.out.println(newsInfo);
 			int i = newsInfoMapper.insertNewsInfo(newsInfo);
 			System.out.println("插入成功数据：" + i);
