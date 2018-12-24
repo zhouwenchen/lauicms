@@ -3,6 +3,7 @@ package org.zwc.cms.bean;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**  
 * @author zhouwenchen
@@ -31,9 +32,10 @@ public class NewsInfo {
 	/** 是否显示*/
 	private String isShow;
 	/** 创建时间*/
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT-6")
+	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT-6")
 	private Date createtime;
 	/** 更新时间*/
+	@JsonIgnore
 	private Date updatetime;
 	/** 新闻内容*/
 	private String newsContent;

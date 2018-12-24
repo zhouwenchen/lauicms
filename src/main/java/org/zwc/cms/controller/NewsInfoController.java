@@ -8,12 +8,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.zwc.cms.bean.CmsResult;
 import org.zwc.cms.bean.NewsInfo;
 import org.zwc.cms.service.NewsInfoService;
 import org.zwc.cms.vo.NewsInfoVo;
+
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 新闻信息的Controller
@@ -88,4 +91,28 @@ public class NewsInfoController {
 		}
 		return cmsResult.errorResult("添加文章出现异常");
 	}
+	
+	/**
+	 * 更新NewsInfo的数据
+	 * @param params
+	 * @return
+	 */
+	@RequestMapping(value="/updateNewsInfo",method = RequestMethod.POST)
+	public CmsResult updateNewsInfo(@RequestParam("params")String params){
+		CmsResult cmsResult = new CmsResult();
+		try {
+			NewsInfo newsInfo = JSONObject.parseObject(params,NewsInfo.class);
+			cmsResult = newsInfoService.updateNewsInfo(newsInfo);
+			if(cmsResult.getStatus()=="success"){
+				return cmsResult.successResult(cmsResult);
+			}
+			return cmsResult.errorResult("添加文章出现异常");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return cmsResult.errorResult("添加文章出现异常");
+		}
+	}
+	
+	
+	
 }

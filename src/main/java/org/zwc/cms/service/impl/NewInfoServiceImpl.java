@@ -89,7 +89,7 @@ public class NewInfoServiceImpl implements NewsInfoService{
 		NewsInfo updateNewsInfo = lists.get(0);
 		if("true".equals(newsInfo.getIsShow())){
 			updateNewsInfo.setIsShow("checked");
-		}else if("false".equals(newsInfo.getIsShow())){
+		}else if("false".equals(newsInfo.getIsShow()) || "".equals(newsInfo.getIsShow())){
 			updateNewsInfo.setIsShow("");
 		}
 		

@@ -12,7 +12,7 @@ layui.config({
  	
 	//根据id的值，加载数据
 	var newsData = '';
-	console.log(parent.id);
+//	console.log(parent.id);
 	var id = parent.id;
 	$.ajax({
 		url : "/newsInfo/getNewsInfoByWhere",
@@ -20,7 +20,7 @@ layui.config({
 		type : "get",
 		dataType : "json",
 		success : function(data){
-		console.log(data);
+//		console.log(data);
 		console.log(data[0].newsName)
 		// 表单中的数据回显操作
 		var obj = data[0];
@@ -42,10 +42,12 @@ layui.config({
 		$(".isShow").val(obj.isShow);
 		
 		$(".newsAuthor").val(obj.newsAuthor);
-		console.log(obj.createtime);
 		$(".newsTime").val(obj.createtime);
 		$(".newsLook").val(obj.newsLook);
-		console.log(obj.newsContent);
+		
+		// 富文本编辑器的回显操作
+		layedit.setContent(editIndex,obj.newsContent);
+//		console.log(layedit.getContent(editIndex));
 		$("#news_content").val(obj.newsContent);
 		
 		var newArray = [];
@@ -80,43 +82,46 @@ layui.config({
  	var editIndex = layedit.build('news_content');
  	form.on("submit(addNews)",function(data){
  		//是否添加过信息
-	 	if(window.sessionStorage.getItem("addNews")){
-	 		addNewsArray = JSON.parse(window.sessionStorage.getItem("addNews"));
-	 	}
+//	 	if(window.sessionStorage.getItem("addNews")){
+//	 		addNewsArray = JSON.parse(window.sessionStorage.getItem("addNews"));
+//	 	}
 	 	//显示、审核状态
- 		var isShow = data.field.show=="on" ? "checked" : "",
- 			newsStatus = data.field.shenhe=="on" ? "审核通过" : "待审核";
+ 		console.log(data);
+ 		alert(data.field.show);
+ 		alert(data.field.shenhe);
+ 		var isShow = data.field.show =="on" ? "checked" : "",
+ 		newsStatus = data.field.shenhe =="on" ? "审核通过" : "待审核";
 
- 		addNews = '{"newsName":"'+$(".newsName").val()+'",';  //文章名称
-// 		addNews += '"newsId":"'+new Date().getTime()+'",';	 //文章id
+ 		addNews = '{"id":'+$("#id").val()+',';  					//id
+ 		addNews += '"newsId":"'+$("#newsId").val()+'",'; 			//newsId
  		addNews += '"newsLook":"'+$(".newsLook option").eq($(".newsLook").val()).text()+'",'; //开放浏览
- 		addNews += '"newsTime":"'+$(".newsTime").val()+'",'; //发布时间
- 		addNews += '"newsAuthor":"'+$(".newsAuthor").val()+'",'; //文章作者
+ 		addNews += '"newsTime":"'+$(".newsTime").val()+'",'; 		//发布时间
+ 		addNews += '"newsName":"'+$(".newsName").val()+'",'; 		//新闻名称
+ 		addNews += '"newsAuthor":"'+$(".newsAuthor").val()+'",'; 	//文章作者
  		addNews += '"newsContent":"'+$("#news_content").val()+'",'; // 内容
- 		addNews += '"isShow":"'+ isShow +'",';  //是否展示
- 		addNews += '"newsStatus":"'+ newsStatus +'"}'; //审核状态
+ 		addNews += '"isShow":"'+ isShow +'",';  					//是否展示
+ 		addNews += '"newsStatus":"'+ newsStatus +'"}';				//审核状态
  		addNewsArray.unshift(JSON.parse(addNews));
 // 		window.sessionStorage.setItem("addNews",JSON.stringify(addNewsArray)); // 写入到浏览器的缓存中
  		//弹出loading
  		var index = top.layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
- 		alert(index);
- 		$.get("/newsInfo/addNewsInfo",{"params":JSON.stringify(JSON.parse(addNews))}, function(data){
+ 		$.post("/newsInfo/updateNewsInfo",{"params":JSON.stringify(JSON.parse(addNews))}, function(data){
 			if(data.status=="success"){
 				layer.close(index);
 				layer.msg("展示状态修改成功！");
 			}else {
-				layer.close(index);
+//				layer.close(index);
 				layer.msg("展示状态修改失败！");
 			}
 		});
  		
-        setTimeout(function(){
-            top.layer.close(index);
-			top.layer.msg("文章添加成功！");
- 			layer.closeAll("iframe");
-	 		//刷新父页面
-	 		parent.location.reload();
-        },2000);
+//        setTimeout(function(){
+//            top.layer.close(index);
+//			top.layer.msg("文章添加成功！");
+// 			layer.closeAll("iframe");
+//	 		//刷新父页面
+//	 		parent.location.reload();
+//        },2000);
  		return false;
  	})
 	

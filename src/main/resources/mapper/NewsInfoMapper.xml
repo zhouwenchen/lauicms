@@ -62,6 +62,14 @@
 		 <trim prefix="set" suffixOverrides=",">
 		  	<if test="isShow!=null">isShow=#{isShow},</if>
 		  	<if test="newsStatus!=null">newsStatus=#{newsStatus},</if>
+		  	<if test="newsName!=null">newsName=#{newsName},</if>
+		  	<if test="newsSource!=null">newsSource=#{newsSource},</if>
+		  	<if test="newsAuthor!=null">newsAuthor=#{newsAuthor},</if>
+		  	<if test="newsStatus!=null">newsStatus=#{newsStatus},</if>
+		  	<if test="newsLook!=null">newsLook=#{newsLook},</if>
+		  	<if test="isShow!=null">isShow=#{isShow},</if>
+		  	<if test="newsContent!=null">newsContent=#{newsContent},</if>
+		  	<if test="createtime!=null">createtime=#{createtime},</if>
 		  	<if test="updatetime!=null">updatetime=#{updatetime},</if>
 		 </trim>
 		 WHERE id=#{id}
