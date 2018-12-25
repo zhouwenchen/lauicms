@@ -104,7 +104,7 @@ public class NewsInfoController {
 			NewsInfo newsInfo = JSONObject.parseObject(params,NewsInfo.class);
 			cmsResult = newsInfoService.updateNewsInfo(newsInfo);
 			if(cmsResult.getStatus()=="success"){
-				return cmsResult.successResult(cmsResult);
+				return cmsResult;
 			}
 			return cmsResult.errorResult("添加文章出现异常");
 		} catch (Exception e) {
@@ -112,7 +112,5 @@ public class NewsInfoController {
 			return cmsResult.errorResult("添加文章出现异常");
 		}
 	}
-	
-	
 	
 }

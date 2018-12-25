@@ -41,6 +41,8 @@ public class NewsInfo {
 	private String newsContent;
 	/** 是否是爬取*/
 	private String isCrawler;
+	/** 是否是删除（1：删除；0，正常）*/
+	private String isDeteled;
 	
 	public NewsInfo() {
 		super();
@@ -157,6 +159,14 @@ public class NewsInfo {
 	public void setIsCrawler(String isCrawler) {
 		this.isCrawler = isCrawler;
 	}
+	
+	public String getIsDeteled() {
+		return isDeteled;
+	}
+
+	public void setIsDeteled(String isDeteled) {
+		this.isDeteled = isDeteled;
+	}
 
 	@Override
 	public String toString() {
@@ -164,6 +174,6 @@ public class NewsInfo {
 				+ ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor + ", newsStatus=" + newsStatus
 				+ ", newsLook=" + newsLook + ", imgUrls=" + imgUrls + ", isShow=" + isShow + ", createtime="
 				+ createtime + ", updatetime=" + updatetime + ", newsContent=" + newsContent + ", isCrawler="
-				+ isCrawler + "]";
+				+ isCrawler + ", isDeteled=" + isDeteled + "]";
 	}
 }

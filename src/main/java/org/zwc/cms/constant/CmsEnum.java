@@ -23,4 +23,8 @@ public interface CmsEnum {
 	String ISCRAWLER_YES = "1";
 	String ISCRAWLER_NO = "0";
 	
+	/** isDeteled 是否删除（1，删除，0：正常）*/
+	String ISDETELED_YES = "1";
+	String ISDETELED_NO = "0";
+	
 }

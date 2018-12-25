@@ -53,6 +53,9 @@
         <if test='isShow != null'>
            and isShow= #{isShow}
         </if>
+         <if test='isDeteled != null'>
+           and isDeteled= #{isDeteled}
+        </if>
          	ORDER BY updatetime desc
     </select>
     
@@ -69,6 +72,7 @@
 		  	<if test="newsLook!=null">newsLook=#{newsLook},</if>
 		  	<if test="isShow!=null">isShow=#{isShow},</if>
 		  	<if test="newsContent!=null">newsContent=#{newsContent},</if>
+		  	<if test="isDeteled!=null">isDeteled=#{isDeteled},</if>
 		  	<if test="createtime!=null">createtime=#{createtime},</if>
 		  	<if test="updatetime!=null">updatetime=#{updatetime},</if>
 		 </trim>

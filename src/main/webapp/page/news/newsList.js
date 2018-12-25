@@ -267,7 +267,6 @@ layui.config({
 	})
 	
 	//操作,编辑文章
-	
 	$("body").on("click",".news_edit",this,function(){  //编辑
 		id = $(this).parents('tr').first().find("#id").val();
 		console.log();
@@ -301,17 +300,30 @@ layui.config({
 			$(this).html("<i class='iconfont icon-star'></i> 已收藏");
 		}
 	})
-
+	
 	$("body").on("click",".news_del",function(){  //删除
 		var _this = $(this);
-		layer.confirm('确定删除此信息？',{icon:3, title:'提示信息'},function(index){
-			//_this.parents("tr").remove();
-			for(var i=0;i<newsData.length;i++){
-				if(newsData[i].newsId == _this.attr("data-id")){
-					newsData.splice(i,1);
-					newsList(newsData);
+		id = _this.parents('tr').first().find("#id").val();
+		layer.confirm('确定删除这条新闻',{icon:3, title:'提示信息'},function(index){
+//			id = $(this).parents('tr').first().find("#id").val();
+			var params = '{"id":'+ id +','+'"isDeteled":"'+ 1 +'"}';
+			console.log(params);
+			$.post("/newsInfo/updateNewsInfo",{"params":JSON.stringify(JSON.parse(params))}, function(data){
+				if(data.status=="success"){
+					layer.close(index);
+					layer.msg("展示状态修改成功！");
+				}else {
+					layer.close(index);
+					layer.msg("展示状态修改失败！");
 				}
-			}
+			});
+			//_this.parents("tr").remove();
+//			for(var i=0;i<newsData.length;i++){
+//				if(newsData[i].newsId == _this.attr("data-id")){
+//					newsData.splice(i,1);
+//					newsList(newsData);
+//				}
+//			}
 			layer.close(index);
 		});
 	})

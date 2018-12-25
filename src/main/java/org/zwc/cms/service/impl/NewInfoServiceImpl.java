@@ -4,6 +4,7 @@ package org.zwc.cms.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zwc.cms.bean.CmsResult;
@@ -54,6 +55,7 @@ public class NewInfoServiceImpl implements NewsInfoService{
 		newsInfo.setCreatetime(new Date());
 		newsInfo.setUpdatetime(newsInfo.getCreatetime());
 		newsInfo.setIsCrawler(CmsEnum.ISCRAWLER_NO);
+		newsInfo.setIsCrawler(CmsEnum.ISDETELED_NO);
 		int result = newsInfoMapper.insertNewsInfo(newsInfo);
 		return result;
 	}
@@ -65,6 +67,12 @@ public class NewInfoServiceImpl implements NewsInfoService{
 
 	@Override
 	public List<NewsInfo> getNewsInfosByWhere(NewsInfo newsInfo) {
+		// 查询未删除的数据
+		if(StringUtils.isEmpty(newsInfo.getIsDeteled())||"1".equals(newsInfo.getIsDeteled())){
+			newsInfo.setIsDeteled(CmsEnum.ISDETELED_NO);
+		}else {
+			newsInfo.setIsDeteled(CmsEnum.ISDETELED_YES);
+		}
 		return newsInfoMapper.getNewsInfosByWhere(newsInfo);
 	}
 
@@ -95,6 +103,15 @@ public class NewInfoServiceImpl implements NewsInfoService{
 		
 		// 3.1审核通过
 		updateNewsInfo.setNewsStatus(newsInfo.getNewsStatus());
+		updateNewsInfo.setNewsContent(newsInfo.getNewsContent());
+		updateNewsInfo.setNewsLook(newsInfo.getNewsLook());
+		updateNewsInfo.setNewsName(newsInfo.getNewsName());
+		updateNewsInfo.setNewsAuthor(newsInfo.getNewsAuthor());
+		updateNewsInfo.setNewsSource(updateNewsInfo.getNewsAuthor());
+		updateNewsInfo.setCreatetime(newsInfo.getCreatetime());
+		updateNewsInfo.setIsDeteled(newsInfo.getIsDeteled());
+		updateNewsInfo.setUpdatetime(new Date());
+		
 		int resultInt = newsInfoMapper.updateNewsInfo(updateNewsInfo);
 		if(resultInt!=0){
 			return result.successResult("更新成功");
