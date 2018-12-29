@@ -53,5 +53,4 @@ public interface NewsInfoMapper {
 	 * @param newsInfo
 	 */
 	public int updateNewsInfo(NewsInfo newsInfo);
-	
 }

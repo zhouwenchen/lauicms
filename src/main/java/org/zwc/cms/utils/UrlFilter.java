@@ -49,8 +49,7 @@ public class UrlFilter {
 		
 		//取出url前后空格
 		url=url.trim();
-		
-		return url;
+		return url.indexOf("http:")==-1?"http:" + url: url;
 	}
 	
 	

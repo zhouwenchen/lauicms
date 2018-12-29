@@ -1,5 +1,6 @@
 package org.zwc.cms.utils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 
 import cn.com.sh.crawlerbese.bean.IMG;
@@ -10,13 +11,19 @@ public class IMGUtils {
 	public static IMG getvalidIMG(Element _imgele, int _imgtypefilter, String _purl, int _imgidx) {
 		IMG img = new IMG();
 		// 获取图片的url
-		String imgsrc = UrlFilter.geturls(_imgele.absUrl("src"));
-
-		if (imgsrc == null || imgsrc.length() <= 0) {
-			imgsrc = UrlFilter.geturls(_imgele.absUrl("data-src"));
-		}
-		if (imgsrc == null || imgsrc.length() <= 0) {
-			imgsrc = UrlFilter.geturls(_imgele.absUrl("alt_src"));
+		String absUrl = _imgele.absUrl("src");
+		String data_src = _imgele.absUrl("data-src");
+		String alt_src = _imgele.absUrl("alt_src");
+		String srcstr = _imgele.attr("src");
+		String imgsrc = "";
+		if(StringUtils.isNotEmpty(absUrl)){
+			imgsrc = UrlFilter.geturls(absUrl);
+		} else if(StringUtils.isNotEmpty(data_src)){
+			imgsrc = UrlFilter.geturls(data_src);
+		}else if(StringUtils.isNotEmpty(alt_src)){
+			imgsrc = UrlFilter.geturls(alt_src);
+		}else if(StringUtils.isNotEmpty(srcstr)){
+			imgsrc = UrlFilter.geturls(srcstr);
 		}
 
 		// 根据图片名后缀获得图片的类型
@@ -33,7 +40,6 @@ public class IMGUtils {
 		) {
 
 		} else {
-
 			// 过滤搜狐有问题图片
 			if (imgsrc.endsWith("!article.foil")) {
 				imgsrc = imgsrc.replace("!article.foil", "");

@@ -13,8 +13,8 @@
     
     <!-- 插入新闻数据 -->
     <insert id="insertNewsInfo" parameterType="newsInfo" useGeneratedKeys="true">
-    insert into newsInfo (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsStatus,newsLook,isShow,imgUrls,createtime,updatetime,newsContent,isCrawler)
-   		value(null,#{newsId},#{newsName},#{newsUrl},#{newsSource},#{newsAuthor},#{newsStatus},#{newsLook},#{isShow},#{imgUrls},#{createtime},#{updatetime},#{newsContent},#{isCrawler})
+    insert into newsInfo (id,newsId,newsName,newsUrl,newsSource,newsAuthor,newsStatus,newsLook,isShow,imgUrls,createtime,updatetime,newsContent,isCrawler,isDeteled)
+   		value(null,#{newsId},#{newsName},#{newsUrl},#{newsSource},#{newsAuthor},#{newsStatus},#{newsLook},#{isShow},#{imgUrls},#{createtime},#{updatetime},#{newsContent},#{isCrawler},#{isDeteled})
     </insert>
     
      <select id="getNewsInfoByUrl" resultType="newsInfo" parameterType="String">

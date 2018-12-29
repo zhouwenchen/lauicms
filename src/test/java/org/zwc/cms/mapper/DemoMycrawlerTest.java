@@ -19,6 +19,11 @@ public class DemoMycrawlerTest {
 	 */
 	@Test
 	public void mycrawler() {
-		DemoMycrawler.getAllVideos(newsInfoMapper,"mnw");
+		DemoMycrawler.getAllVideos(newsInfoMapper);
 	}
+	
+	
+//	public static void main(String[] args) {
+//		DemoMycrawler.getAllVideos(newsInfoMapper,"mnw");
+//	}
 }

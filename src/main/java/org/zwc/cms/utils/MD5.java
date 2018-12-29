@@ -58,7 +58,7 @@ public class MD5 {
 
     public static void main(String[] args) {
         MD5 getMD5 = new MD5();
-//       System.out.println(getMD5.GetMD5Code("http://mobile.rr.tv/pages/videoShare/?id=109238&share=-1"));
+       System.out.println(getMD5.GetMD5Code("http://mobile.rr.tv/pages/videoShare/?id=109238&share=-1"));
                                       
     }
 

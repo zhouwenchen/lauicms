@@ -27,7 +27,8 @@ public class GenerateHtml {
 		    if(date==null||date.equals("")) {
 		      date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());//如果没有日期，则用当前日期
 //		      date = page.getPagedate();
-		    }
+		    } 
+		    
 		    String msg = "<div>"+date+"&nbsp"+page.getSource()+"</div>";
 		    StringBuilder tempContent = new StringBuilder(page.getContent().replaceFirst("!@#!@", "<p>").replaceAll("!@#!@", "</p><p>"));
 		    if(tempContent.lastIndexOf("<p>")==-1) {
