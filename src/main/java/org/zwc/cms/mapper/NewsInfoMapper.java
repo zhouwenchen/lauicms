@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.zwc.cms.bean.NewsInfo;
+import org.zwc.cms.bean.Param;
 
 /**  
  * 获取到新闻列表的数据
@@ -53,4 +54,10 @@ public interface NewsInfoMapper {
 	 * @param newsInfo
 	 */
 	public int updateNewsInfo(NewsInfo newsInfo);
+	
+	/**
+	 * 根据来源，开始和结束时间查询
+	 * @param param
+	 */
+	public List<NewsInfo> getNewInfoByStartEnd(Param param);
 }

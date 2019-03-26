@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.zwc.cms.bean.CmsResult;
 import org.zwc.cms.bean.NewsInfo;
+import org.zwc.cms.bean.Param;
 
 /**
  * 
@@ -56,4 +57,10 @@ public interface NewsInfoService {
 	 * @param newsInfo
 	 */
 	public CmsResult updateNewsInfo(NewsInfo newsInfo);
+	
+	/**
+	 * 根据来源，开始和结束时间查询
+	 * @param param
+	 */
+	public List<NewsInfo> getNewInfoByStartEnd(Param param);
 }

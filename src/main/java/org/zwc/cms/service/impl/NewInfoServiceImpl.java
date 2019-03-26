@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.zwc.cms.bean.CmsResult;
 import org.zwc.cms.bean.NewsInfo;
+import org.zwc.cms.bean.Param;
 import org.zwc.cms.constant.CmsEnum;
 import org.zwc.cms.mapper.NewsInfoMapper;
 import org.zwc.cms.service.NewsInfoService;
@@ -118,5 +119,10 @@ public class NewInfoServiceImpl implements NewsInfoService{
 		}
 		
 		return result.errorResult("更新失败");
+	}
+
+	@Override
+	public List<NewsInfo> getNewInfoByStartEnd(Param param) {
+		return newsInfoMapper.getNewInfoByStartEnd(param);
 	}
 }

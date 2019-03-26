@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.zwc.cms.bean.NewsInfo;
+import org.zwc.cms.bean.Param;
 import org.zwc.cms.constant.CmsEnum;
 import org.zwc.cms.service.NewsInfoService;
 import org.zwc.cms.utils.CommentUtils;
@@ -139,5 +140,21 @@ public class NewsInfoMapperTest {
 //		}
 		int info = newsInfoService.insertNewsInfo(str);
 		System.out.println("添加文章"+info);
+	}
+	
+	/**
+	 * 根据source
+	 * 开始和结束时间查询数据
+	 */
+	@Test
+	public void getNewInfoByStartEnd(){
+		Param param = new Param();
+		param.setpStr01("sogou");
+		param.setpStr02("20190301");
+		param.setpStr03("20190320");
+		List<NewsInfo> newsInfos = newsInfoService.getNewInfoByStartEnd(param);
+		for (NewsInfo newsInfo : newsInfos) {
+			System.out.println(newsInfo);
+		}
 	}
 }

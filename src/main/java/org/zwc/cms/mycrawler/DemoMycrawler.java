@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.http.client.utils.HttpClientUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -41,7 +40,8 @@ public class DemoMycrawler {
 	}
 	private static String[][] urls = {
 //		{"http://www.mnw.cn/news/ent/ylxw/","娱乐","","mnw"},		//娱乐视频
-		{"https://www.huabian.com/api/photo/123/5/1/bto95hjvs","娱乐","","huabian"},		//花边娱乐	http://www.huabian.com/mingxing
+//		{"https://www.huabian.com/api/photo/123/5/1/bto95hjvs","娱乐","","huabian"},		//花边娱乐	http://www.huabian.com/mingxing
+		{"https://weixin.sogou.com/","资讯","","sogou"},		//搜狗微信，资讯分类
 	};
 	
 	public static void getAllVideos(NewsInfoMapper newsInfoMapper) {
@@ -55,6 +55,9 @@ public class DemoMycrawler {
 				break;
 			case "huabian":
 				 pages = gethuabianPages(urlfrom,i);
+				break;
+			case "sogou":
+				 pages = getsogouPages(urlfrom,i);
 				break;
 			default:
 				break;
@@ -93,7 +96,7 @@ public class DemoMycrawler {
 				newsInfo.setNewsName(page.getTopic());
 				newsInfo.setNewsUrl(page.getUrl());
 				newsInfo.setNewsSource(page.getSource());
-				newsInfo.setNewsAuthor(page.getSource());
+				newsInfo.setNewsAuthor(page.getAuthor());
 				newsInfo.setNewsStatus(CmsEnum.NEWSSTATUS_PASS);
 				newsInfo.setNewsLook(CmsEnum.NEWSLOOK_OPEN);
 				newsInfo.setIsShow(CmsEnum.ISSHOW_YES);
@@ -122,11 +125,40 @@ public class DemoMycrawler {
 				System.out.println(newsInfo);
 				int i = newsInfoMapper.insertNewsInfo(newsInfo);
 				System.out.println("插入成功数据：" + i);
-			} catch (NumberFormatException e) {
+			} catch (Exception e) {
 				System.err.println("出现异常了===============");
 				continue;
 			}
 		}
+	}
+	
+	/**
+	 * 搜狗微信
+	 */
+	private static List<PAGE> getsogouPages(String urlfrom, int i) {
+		List<PAGE> pages = new ArrayList<PAGE>();
+		Document doc = GetDoc.getdoc(urls[i][0], 3000, 0, 2);
+		Elements elements_list = doc.select("#pc_0_0 > li");
+		for (Element element : elements_list) {
+			String pageUrl = element.select("div[class=txt-box] > h3 > a").attr("href");
+			String title = element.select("div[class=txt-box] > h3").text();
+			String source = element.select("a.account").text();
+			String time = String.valueOf(System.currentTimeMillis());
+			
+			Document document = GetDoc.getbaseDoc(pageUrl);
+			Elements elements = document.select("#js_content");
+			// 3.正文内容
+			ArrayList<IMG> imglist = new ArrayList<IMG>();
+			DocUtils docUtils = new DocUtils();
+			String content = docUtils.getcontent(elements.first(), pageUrl, 2, 1, imglist);
+			
+			if(pageUrl == null || title == null|| source == null|| time == null|| content == null){
+				System.out.println("有数据为空："+pageUrl+"\t"+title+"\t"+source+"\t"+time+"\t"+content);
+				continue;
+			}
+			setPage(pages, pageUrl, title, urls[i][3], time, imglist, content,source);
+		}
+		return pages;
 	}
 
 	/**
@@ -134,7 +166,6 @@ public class DemoMycrawler {
 	 */
 	private static List<PAGE> gethuabianPages(String urlfrom, int i) {
 		List<PAGE> pages = new ArrayList<PAGE>();
-//		Document doc = GetDoc.getdoc(urls[i][0], 3000, 0, 2);
 		String jsonStr = HttpClientUtilsForAppV2.get(urls[i][0]);
 		JSONObject jsonObject = JSON.parseObject(jsonStr);
 		JSONArray jsonObjectJArrs = jsonObject.getJSONObject("data").getJSONObject("info").getJSONArray("data");
@@ -151,8 +182,6 @@ public class DemoMycrawler {
 			Elements elements = document.select("body > div.hb_main > div.hb_main_l > div.hb_neirong > div.hb_content");
 //			System.out.println(document);
 			
-			
-			
 			// 3.正文内容
 			ArrayList<IMG> imglist = new ArrayList<IMG>();
 			DocUtils docUtils = new DocUtils();
@@ -162,7 +191,7 @@ public class DemoMycrawler {
 				System.out.println("有数据为空："+pageUrl+"\t"+title+"\t"+source+"\t"+time+"\t"+content);
 				continue;
 			}
-			setPage(pages, pageUrl, title, source, time, imglist, content);
+			setPage(pages, pageUrl, title, urls[i][3], time, imglist, content,source);
 		}
 		return pages;
 	}
@@ -198,7 +227,7 @@ public class DemoMycrawler {
 				continue;
 			}
 			
-			setPage(pages, pageUrl, title, source, time, imglist, content);
+			setPage(pages, pageUrl, title, urls[i][3], time, imglist, content,source);
 		}
 		return pages;
 	}
@@ -206,14 +235,14 @@ public class DemoMycrawler {
 	/**
 	 * 设置page的值
 	 */
-	private static PAGE setPage(List<PAGE> pages, String pageUrl, String title, String source, String time,
-			ArrayList<IMG> imglist, String content) {
+	private static PAGE setPage(List<PAGE> pages, String pageUrl, String title, String urlfrom, String time,
+			ArrayList<IMG> imglist, String content,String source) {
 		PAGE page = new PAGE();
 		page.setUrl(pageUrl);
 		page.setContenttitle(title);
 		page.setTopic(title);
 		page.setPagedate(time);
-		page.setSource(source);
+		page.setSource(urlfrom);
 		page.setAuthor(source);
 		page.setContent(content);
 		page.setImgs(imglist);
