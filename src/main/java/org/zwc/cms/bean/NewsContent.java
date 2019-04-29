@@ -16,6 +16,8 @@ public class NewsContent {
 	private String newsName;
 	/** url*/
 	private String newsUrl;
+	/** newstype*/
+	private String newstype;
 	/** 来源*/
 	private String newsSource;
 	/** 作者*/
@@ -81,6 +83,14 @@ public class NewsContent {
 		this.newsUrl = newsUrl;
 	}
 
+	public String getNewstype() {
+		return newstype;
+	}
+
+	public void setNewstype(String newstype) {
+		this.newstype = newstype;
+	}
+
 	public String getNewsSource() {
 		return newsSource;
 	}
@@ -116,7 +126,8 @@ public class NewsContent {
 	@Override
 	public String toString() {
 		return "NewsContent [id=" + id + ", newsId=" + newsId + ", newsName=" + newsName + ", newsUrl=" + newsUrl
-				+ ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor + ", newsContent=" + newsContent
-				+ ", imgUrls=" + imgUrls + ", createtime=" + createtime + ", updatetime=" + updatetime + "]";
+				+ ", newstype=" + newstype + ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor
+				+ ", newsContent=" + newsContent + ", imgUrls=" + imgUrls + ", createtime=" + createtime
+				+ ", updatetime=" + updatetime + "]";
 	}
 }

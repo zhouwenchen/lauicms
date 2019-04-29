@@ -22,7 +22,6 @@ public class DemoMycrawlerTest {
 		DemoMycrawler.getAllVideos(newsInfoMapper);
 	}
 	
-	
 //	public static void main(String[] args) {
 //		DemoMycrawler.getAllVideos(newsInfoMapper,"mnw");
 //	}

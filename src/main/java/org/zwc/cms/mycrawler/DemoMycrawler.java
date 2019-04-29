@@ -17,6 +17,7 @@ import org.zwc.cms.mapper.NewsInfoMapper;
 import org.zwc.cms.utils.CommentUtils;
 import org.zwc.cms.utils.DocUtils;
 import org.zwc.cms.utils.GetDoc;
+import org.zwc.cms.utils.GetMainType;
 import org.zwc.cms.utils.HttpClientUtilsForAppV2;
 
 import com.alibaba.fastjson.JSON;
@@ -41,7 +42,8 @@ public class DemoMycrawler {
 	}
 	private static String[][] urls = {
 //		{"http://www.mnw.cn/news/ent/ylxw/","娱乐","","mnw"},		//娱乐视频
-		{"https://www.huabian.com/api/photo/123/5/1/bto95hjvs","娱乐","","huabian"},		//花边娱乐	http://www.huabian.com/mingxing
+//		{"https://www.huabian.com/api/photo/123/5/1/bto95hjvs","娱乐","","huabian"},		//花边娱乐	http://www.huabian.com/mingxing
+		{"https://newsapi.yiche.com/appnews/news/list/original?page=1&publishtime=&size=20","汽车","","yiche"},		//花边娱乐	http://www.huabian.com/mingxing
 	};
 	
 	public static void getAllVideos(NewsInfoMapper newsInfoMapper) {
@@ -56,6 +58,9 @@ public class DemoMycrawler {
 			case "huabian":
 				 pages = gethuabianPages(urlfrom,i);
 				break;
+			case "yiche":
+				 pages = getyichePages(urlfrom,i);
+				break;
 			default:
 				break;
 			}
@@ -66,7 +71,7 @@ public class DemoMycrawler {
 		
 		try {
 			System.out.println("=========睡眠时间==========");
-			Thread.sleep(100000);
+			Thread.sleep(100);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -94,9 +99,10 @@ public class DemoMycrawler {
 				newsInfo.setNewsUrl(page.getUrl());
 				newsInfo.setNewsSource(page.getSource());
 				newsInfo.setNewsAuthor(page.getSource());
-				newsInfo.setNewsStatus(CmsEnum.NEWSSTATUS_PASS);
-				newsInfo.setNewsLook(CmsEnum.NEWSLOOK_OPEN);
-				newsInfo.setIsShow(CmsEnum.ISSHOW_YES);
+				newsInfo.setNewsStatus(CmsEnum.NEWSSTATUS_WAIT_PASS);// 待审核
+				newsInfo.setNewsLook(CmsEnum.NEWSLOOK_OPEN); 		// 开放浏览
+				newsInfo.setIsShow(CmsEnum.ISSHOW_YES); 			// 是否显示
+				newsInfo.setNewsType(GetMainType.getMain(page.getTp1st())); // 主分类
 
 				Map<String, List<Map<String, Object>>> map = new HashMap<String,List<Map<String, Object>>>();
 				List<Map<String, Object>> lists = new ArrayList<Map<String, Object>>();
@@ -130,6 +136,75 @@ public class DemoMycrawler {
 	}
 
 	/**
+	 * 易车APP
+	 */
+	private static List<PAGE> getyichePages(String urlfrom, int i) {
+		String baseyicheUrl = "http://news.m.yiche.com";
+		String basePageDetailUrl = "https://newsapi.yiche.com/appnews/news/show?";
+		List<PAGE> pages = new ArrayList<PAGE>();
+		String jsonStr = HttpClientUtilsForAppV2.get(urls[i][0]);
+		JSONObject jsonObject = JSON.parseObject(jsonStr);
+		System.out.println(jsonStr);
+		JSONArray jsonObjectJArrs = jsonObject.getJSONObject("data").getJSONArray("list");
+		for(int j = 0; j < jsonObjectJArrs.size();j++){
+			JSONObject JO = (JSONObject) jsonObjectJArrs.get(j);
+			String pageUrl = baseyicheUrl + JO.getString("url");
+			String title = JO.getString("title");
+			String source = JO.getJSONObject("user").getString("showname");
+			String time = JO.getString("publishTime");
+			
+			String type = JO.getString("type");
+			String id = JO.getString("id");
+			
+			
+			
+			// 获取正文内容
+			String pageDetailUrl = basePageDetailUrl + "type="+ type +"&id=" + id;
+			String jsonDetailStr = HttpClientUtilsForAppV2.get(pageDetailUrl);
+			System.out.println(jsonDetailStr);
+			JSONObject jsonDetailJO = JSON.parseObject(jsonDetailStr);
+			JSONArray contents = jsonDetailJO.getJSONObject("data").getJSONArray("content");
+			StringBuffer sb = new StringBuffer();
+			
+			String contentTag = "!@#!@";
+			// 1. 开始标签
+			sb.append(contentTag+"\t");
+			ArrayList<IMG> imglist = new ArrayList<IMG>();
+			int idx = 1;
+			for(int m = 0; m < contents.size();m++){
+				JSONObject content = contents.getJSONObject(m);
+				String content_t = content.getString("type");
+				String content_c = content.getString("content");
+				if("9".equals(content_t)){
+					continue;
+				}
+				// 2.正文内容
+				if("1".equals(content_t)){
+					sb.append(content_c).append(contentTag);
+				}
+				
+				// 3.图片
+				if("2".equals(content_t)){
+					IMG img = new IMG();
+					String imgidex = "000"+String.valueOf(idx);
+					sb.append("$#imgidx="+imgidex+"#$").append(contentTag+"\t");
+					img.setSrc(content_c);
+					img.setIdx(idx);
+					imglist.add(img);
+					idx++;
+				}
+			}
+			
+			if(pageUrl == null || title == null|| source == null|| time == null|| sb.toString() == null){
+				System.out.println("有数据为空："+pageUrl+"\t"+title+"\t"+source+"\t"+time+"\t"+sb.toString());
+				continue;
+			}
+			setPage(pages, pageUrl, title, source, time, imglist, sb.toString(),urls[i][1]);
+		}
+		return pages;
+	}
+	
+	/**
 	 * 花边娱乐
 	 */
 	private static List<PAGE> gethuabianPages(String urlfrom, int i) {
@@ -151,8 +226,6 @@ public class DemoMycrawler {
 			Elements elements = document.select("body > div.hb_main > div.hb_main_l > div.hb_neirong > div.hb_content");
 //			System.out.println(document);
 			
-			
-			
 			// 3.正文内容
 			ArrayList<IMG> imglist = new ArrayList<IMG>();
 			DocUtils docUtils = new DocUtils();
@@ -162,7 +235,7 @@ public class DemoMycrawler {
 				System.out.println("有数据为空："+pageUrl+"\t"+title+"\t"+source+"\t"+time+"\t"+content);
 				continue;
 			}
-			setPage(pages, pageUrl, title, source, time, imglist, content);
+			setPage(pages, pageUrl, title, source, time, imglist, content,urls[i][1]);
 		}
 		return pages;
 	}
@@ -198,7 +271,7 @@ public class DemoMycrawler {
 				continue;
 			}
 			
-			setPage(pages, pageUrl, title, source, time, imglist, content);
+			setPage(pages, pageUrl, title, source, time, imglist, content,urls[i][1]);
 		}
 		return pages;
 	}
@@ -207,7 +280,7 @@ public class DemoMycrawler {
 	 * 设置page的值
 	 */
 	private static PAGE setPage(List<PAGE> pages, String pageUrl, String title, String source, String time,
-			ArrayList<IMG> imglist, String content) {
+			ArrayList<IMG> imglist, String content,String mainType) {
 		PAGE page = new PAGE();
 		page.setUrl(pageUrl);
 		page.setContenttitle(title);
@@ -217,6 +290,7 @@ public class DemoMycrawler {
 		page.setAuthor(source);
 		page.setContent(content);
 		page.setImgs(imglist);
+		page.setTp1st(mainType);
 		pages.add(page);
 		return page;
 	}

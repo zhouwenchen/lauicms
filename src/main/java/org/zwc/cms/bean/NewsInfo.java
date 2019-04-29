@@ -19,6 +19,8 @@ public class NewsInfo {
 	private String newsName;
 	/** Url*/
 	private String newsUrl;
+	/** newsType*/
+	private String newsType;
 	/** 来源*/
 	private String newsSource;
 	/** 作者*/
@@ -32,7 +34,7 @@ public class NewsInfo {
 	/** 是否显示*/
 	private String isShow;
 	/** 创建时间*/
-	@JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT-6")
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone="GMT+8")
 	private Date createtime;
 	/** 更新时间*/
 	@JsonIgnore
@@ -70,6 +72,14 @@ public class NewsInfo {
 
 	public void setNewsUrl(String newsUrl) {
 		this.newsUrl = newsUrl;
+	}
+
+	public String getNewsType() {
+		return newsType;
+	}
+
+	public void setNewsType(String newsType) {
+		this.newsType = newsType;
 	}
 
 	public String getNewsName() {
@@ -171,9 +181,9 @@ public class NewsInfo {
 	@Override
 	public String toString() {
 		return "NewsInfo [id=" + id + ", newsId=" + newsId + ", newsName=" + newsName + ", newsUrl=" + newsUrl
-				+ ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor + ", newsStatus=" + newsStatus
-				+ ", newsLook=" + newsLook + ", imgUrls=" + imgUrls + ", isShow=" + isShow + ", createtime="
-				+ createtime + ", updatetime=" + updatetime + ", newsContent=" + newsContent + ", isCrawler="
-				+ isCrawler + ", isDeteled=" + isDeteled + "]";
+				+ ", newsType=" + newsType + ", newsSource=" + newsSource + ", newsAuthor=" + newsAuthor
+				+ ", newsStatus=" + newsStatus + ", newsLook=" + newsLook + ", imgUrls=" + imgUrls + ", isShow="
+				+ isShow + ", createtime=" + createtime + ", updatetime=" + updatetime + ", newsContent=" + newsContent
+				+ ", isCrawler=" + isCrawler + ", isDeteled=" + isDeteled + "]";
 	}
 }

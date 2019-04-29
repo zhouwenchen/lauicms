@@ -41,6 +41,9 @@
          <if test='newsUrl != null'> 
            and newsUrl = #{newsUrl}
         </if>
+         <if test='newsType != null'> 
+           and newsType = #{newsType}
+        </if>
          <if test='newsSource != null'> 
            and newsSource = #{newsSource}
         </if>

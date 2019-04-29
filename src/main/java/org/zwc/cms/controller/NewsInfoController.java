@@ -3,10 +3,8 @@ package org.zwc.cms.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,10 +40,12 @@ public class NewsInfoController {
 		if(newsInfo == null){
 			return null;
 		}
-		System.out.println(newsInfo.getId());
+		System.out.println("newsId:\t"+newsInfo.getId() + "newsType:\t"+newsInfo.getNewsType());
 //		newsInfo.setNewsId(newsId);
 //		newsInfo.setId(id);
-		return newsInfoService.getNewsInfosByWhere(newsInfo);
+		List<NewsInfo> lists = newsInfoService.getNewsInfosByWhere(newsInfo);
+		System.out.println("lists.size()"+lists.size());
+		return lists;
 	}
 	
 	/**
