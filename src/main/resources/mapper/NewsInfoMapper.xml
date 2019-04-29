@@ -81,5 +81,9 @@
 		 </trim>
 		 WHERE id=#{id}
     </update>
-	   
+	
+	<!-- 调用存储过程，查询搜狗微信的数据 -->
+	<select id="getNewInfoByStartEnd" resultType="newsInfo" statementType="CALLABLE">
+       	{CALL get_newsInfo(#{pStr01},#{pStr02},#{pStr03})}
+    </select>
 </mapper>
